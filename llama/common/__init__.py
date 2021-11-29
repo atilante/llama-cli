@@ -3,6 +3,13 @@ from .input import *
 from .files import *
 from .dataframes import *
 
+# Checks is some condition is true. If the condition is not true, terminate
+# the program with an error message.
+#
+# Parameters:
+# condition: a Boolean value
+# message (string): message to print to the standard output
+# exit_code: operating system exit code of the program
 def require(condition, message='Cancelled', exit_code=0):
   if not condition:
     print(message)

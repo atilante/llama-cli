@@ -1,3 +1,6 @@
+# anonymize.py
+#
+# Data anonymization
 import random
 
 from llama.common.files import write_csv
@@ -7,6 +10,16 @@ from .Config import PERSON_KEY, EXPORT_DIR, EXPORT_INDEX_JSON
 from .common import require, write_text, write_json
 
 def add_to_person_map(person_map, person_included, rows):
+  """
+  Creates a pseudonym for a person and adds it to the dictionary of
+  pseudonyms.
+
+  :param person_map: an existing dict from person keys to pseudonyms
+  :param person_included: if True, add the person.
+                          This can also be a set.
+  :param rows: list of persons as list of dicts, each dict having a key
+               PERSON_KEY
+  """
   for p in rows[PERSON_KEY]:
     if not p in person_map and (person_included is None or p in person_included):
       ap = None
@@ -15,6 +28,13 @@ def add_to_person_map(person_map, person_included, rows):
       person_map[p] = ap
 
 def command(args, config):
+  """
+  Implements the anonymization command.
+
+  :param args:
+  :param config:
+  :return:
+  """
   sources = []
   person_map = {}
   person_included = Filters.person_included()

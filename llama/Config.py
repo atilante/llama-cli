@@ -1,12 +1,16 @@
+# Config.py
+#
+# Handles Llama configuration file.
+
 import os.path
 import uuid
 from .common import read_json, write_json
 
-VERSION = '1.0.0'
-CONFIG_FILE = '.llama'
-TOKENS_FILE = '.tokens'
-STORAGE_DIR = 'fetched'
-EXPORT_DIR = 'export'
+VERSION = '1.0.0'        # Program version
+CONFIG_FILE = '.llama'   # Name of the configuration file
+TOKENS_FILE = '.tokens'  # Name of the token file
+STORAGE_DIR = 'fetched'  # Directory for raw data
+EXPORT_DIR = 'export'    # Directory for exportable (pseudonymized) data
 EXPORT_INDEX_JSON = 'index.json'
 
 # These keys should be in the data tables (if appropriate)
@@ -14,6 +18,7 @@ TIME_KEY = 'Time'
 PERSON_KEY = 'Person'
 GRADE_KEY = 'Grade'
 
+# Class for reading, writing and storing a Llama configuration.
 class Config:
 
   def __init__(self):
@@ -28,6 +33,9 @@ class Config:
       self.load()
 
   def load(self):
+    """
+    Loads a Llama configuration file.
+    """
     self.data = self.join_tokens(read_json(CONFIG_FILE) or {}, read_json(TOKENS_FILE) or {})
     
     # Backwards compatibility
@@ -37,6 +45,9 @@ class Config:
         del src['id']
 
   def write(self):
+    """
+    Writes a Llama configuration file.
+    """
     data, tokens = self.split_tokens(self.data)
     write_json(CONFIG_FILE, data)
     if tokens:

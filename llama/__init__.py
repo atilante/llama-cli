@@ -1,3 +1,7 @@
+# __init__.py
+#
+# Command-line interface (CLI).
+
 import sys
 from .common import find, require
 from .Config import Config
@@ -12,6 +16,15 @@ from . import shell
 from .LlamaApi import LlamaApi
 from .LlamaStats import LlamaStats
 
+# The Llama command-line interface runs by executing one command with
+# additional paraamters. Here are the list of commands.
+#
+# Each command has the following properties:
+#   cmd: the actual command
+#   desc: one-line textual description of the command
+#   require: list of strings: what operations need to be done before the
+#            command can be executed.
+#   call: which function to call to execute the command.
 COMMANDS = [
   {
     'cmd': 'status',
@@ -64,12 +77,16 @@ def llama_cli(cmd, args):
   definition = find(COMMANDS, lambda c: c['cmd'] == cmd)
   require(definition, 'Unknown command')
   config = Config()
+
+  # End program if some command requirement is not met.
   requirements = definition.get('require', [])
   if 'config' in requirements:
     require(config.exists, 'The working directory has no configuration (.llama)')
   if 'source' in requirements:
     require(config.sources, 'First, use command \'source\' to configure a data source')
+
   require(definition.get('call', None), 'FATAL: command missing implementation', 1)
+
   definition['call'](args, config)
 
 def main():

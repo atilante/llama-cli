@@ -1,3 +1,7 @@
+# input.py
+#
+# Text-based interface
+
 def input_selection(options):
   opt = list(options)
   n = 0

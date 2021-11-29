@@ -1,3 +1,7 @@
+# files.py
+#
+# File and directory operations.
+
 import os
 import json
 import pandas
